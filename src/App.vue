@@ -22,10 +22,10 @@
 </template>
 <script>
   export default {
-    data() {
-      return {
-        activeIndex: '4'
-      };
+    data: function() {
+        return {
+          activeIndex: '4'
+        };
     },
     methods: {
       handleSelect(key, keyPath) {
