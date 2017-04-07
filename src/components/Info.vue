@@ -13,7 +13,21 @@
 
 <script>
     import grid from "./Grid.vue";
+    import EventBus from '../static/js/eventBus.js';
     export default {
+        mounted() {
+            var me = this;
+            EventBus.$on('id-selected', function (node) {
+                if(node.isLeaf) {
+                    me.$data.editableTabs.push({
+                        title: node.label,
+                        name: ++me.$data.tabIndex + '',
+                        content: node.id + ''
+                    });
+                    me.$data.editableTabsValue = me.$data.tabIndex + '';
+                }                
+            });
+        },
         data() {
             return {
                 editableTabsValue: '2',
@@ -64,3 +78,15 @@
         }
     }
 </script>
+
+<style>
+    div.el-tabs__content {
+        border: 1px solid #d1dbe5;
+        border-top: 0;
+        border-bottom: 0;
+        padding: 0 5px;
+    }
+    div.el-tabs__header {
+        margin: 0;
+    }
+</style>
