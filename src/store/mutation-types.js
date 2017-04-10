@@ -1,0 +1,1 @@
+export const RECEIVE_MATERIALS = 'RECEIVE_MATERIALS'; 
