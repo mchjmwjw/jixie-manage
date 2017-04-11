@@ -7,10 +7,8 @@ const _materials = [
     { phid: 1, m_no: '10006', m_name: '切割机', m_unit: '台', m_amount: 5, m_kind: '类别4', m_remark: '无' }
 ];
 
-function getMaterials(cb) {
-	return cb(_materials);
-}
-
-export default {
-	getMaterials
+export default {	
+	getMaterials(cb) {
+		return cb(_materials);
+	}
 };
