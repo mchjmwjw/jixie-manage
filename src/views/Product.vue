@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Tabpanel from "./Info.vue";
+import Tabpanel from "../components/product/Info.vue";
 import EventBus from "../static/js/eventBus.js";
 export default {
     components: {

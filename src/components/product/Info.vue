@@ -13,7 +13,7 @@
 
 <script>
     import grid from "./Grid.vue";
-    import EventBus from '../static/js/eventBus.js';
+    import EventBus from '../../static/js/eventBus.js';
     export default {
         mounted() {
             var me = this;

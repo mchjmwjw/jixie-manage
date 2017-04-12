@@ -45,7 +45,8 @@
         },    
         mounted: function() {
             //this.$store.dispatch('getAllMaterials');
-            //this.$data.tableData = this.$store.getters.allMaterials; ,{emulateJSON: true}
+            //this.$data.tableData = this.$store.getters.allMaterials; //,{emulateJSON: true}
+
             // this.$http.jsonp('http://127.0.0.1:5000/api/v1.0/jsonp').then(
             //     response => {
             //         //var tmp = eval('(' + response.data + ')');
@@ -58,15 +59,20 @@
             //         let xx =response;
             //         alert('false');
             //     });
+
             this.$http.get('http://127.0.0.1:5000/api/v1.0/cors/').then(
                 response => {                    
                     this.$data.tableData = response.data;
+                    this.$store.dispatch('getAllMaterials', {
+                        material: response.data
+                    });
                 },
                 response => {
                     alert('false');
                     console.log(response);
                 }
             );
+
         },
         computed: mapGetters({
             materials: 'allMaterials'

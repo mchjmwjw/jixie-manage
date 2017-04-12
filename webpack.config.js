@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+//var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: './src/main.js',
@@ -50,7 +50,7 @@ module.exports = {
 	},
 
 	plugins: [
-		new ExtractTextPlugin('[name]-[hash].css') // 分离js和css
+		new ExtractTextPlugin('[name]-[hash].css') // 分离js和css		
 	],
 
 	devServer: {
