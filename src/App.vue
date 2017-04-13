@@ -61,4 +61,7 @@ export default {
 .el-menu-item > a {
     text-decoration:none;
 }
+.content {
+	margin: 10px auto;
+}
 </style>

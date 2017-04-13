@@ -4,11 +4,13 @@ import * as types from '../mutation-types';
 // 初始化state
 const state = {
 	all: [],
-	count: 1
+	count: 1,
+	infos: {}
 };
 
 const getters = {
-	allMaterials: state => state.all
+	allMaterials: state => state.all,
+	allInfos: state => state.infos
 };
 
 const mutations = {
@@ -17,15 +19,18 @@ const mutations = {
 	},
 	increment(state) {
 		state.count++;
+	},
+	[types.SET_MATERIALS] (state, { infos }) {
+		state.infos = infos;
 	}
 };
 
 const actions = {
-	getAllMaterials ({ commit }, data) {
-		// manage.getMaterials(material => {
-		// 	commit(types.RECEIVE_MATERIALS, { material });	// 提交mutation RECEIVE_MATERIALS
-		// });
-		commit(types.RECEIVE_MATERIALS, { data });
+	getAllMaterials ({ commit }, data) {		
+		commit(types.RECEIVE_MATERIALS, data);
+	},
+	setMaterials ({ commit }, data) {
+		commit(types.SET_MATERIALS, data);
 	}
 };
 
