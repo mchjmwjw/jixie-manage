@@ -16,25 +16,32 @@
         <el-input v-model="input" placeholder="请输入内容">            
         </el-input>
 
-        <div class='panel-form'>
+        <div class='panel-form'>            
             <el-form ref="form" :model="infos" label-width="80px">
-            <el-form-item label="活动名称">
-                <el-input v-model="infos.name"></el-input>
+            <span hidden v-model="infos.phid"></span>
+            <el-form-item label="编号">
+                <el-input v-model="infos.m_no"></el-input>
             </el-form-item>
-            <el-form-item label="活动区域">
-                <el-select v-model="infos.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+            <el-form-item label="名称">
+                <el-input v-model="infos.m_name"></el-input>
+            </el-form-item>
+            <el-form-item label="种类">
+                <el-select v-model="infos.m_kind" placeholder="请选择种类">
+                <el-option label="类别一" value="易损件"></el-option>
+                <el-option label="类别二" value="原材料"></el-option>
                 </el-select>
-            </el-form-item>                        
-            <el-form-item label="特殊资源">
-                <el-radio-group v-model="infos.resource">
-                <el-radio label="线上品牌商赞助"></el-radio>
-                <el-radio label="线下场地免费"></el-radio>
+            </el-form-item>
+            <el-form-item label="数量">
+                <el-input v-model="infos.m_amount" value="number"></el-input>
+            </el-form-item>            
+            <el-form-item label="计量单位">
+                <el-radio-group v-model="infos.m_unit">
+                <el-radio label="吨"></el-radio>
+                <el-radio label="打"></el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="活动形式">
-                <el-input type="textarea" v-model="infos.desc"></el-input>
+            <el-form-item label="备注">
+                <el-input type="textarea" v-model="infos.m_remark"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">立即创建</el-button>
@@ -50,14 +57,17 @@
 <script>
     import { mapGetters, mapActions } from 'vuex'
     import Vue from 'vue'
-    function Form(name='', region='', resource='', desc='') {
-        this.name = name;
-        this.region = region;
-        this.resource = resource;
-        this.desc = desc;
+    function Form(phid=null, m_no='', m_name='', m_kind='', m_amount='', m_unit='', m_remark='') {
+        this.phid = phid;
+        this.m_no = m_no;   
+        this.m_name = m_name;
+        this.m_kind = m_kind;
+        this.m_amount = m_amount;
+        this.m_unit = m_unit;
+        this.m_remark = m_remark;
         if(typeof Form._initialized == 'undefined') {
             Form.prototype.show = function() {
-                alert(this.name + ',' + this.region + ',' + this.resource + ',' + this.desc);
+                alert('什么都不想展示');
             }
         }
     }
@@ -103,7 +113,7 @@
                 });
             */                
 
-            this.$http.get('http://127.0.0.1:5000/api/v1.0/cors/').then(
+            this.$http.get('http://127.0.0.1:5000/api/v1.0/materials/get/').then(
                 response => {                    
                     //this.$data.tableData = response.data;
                     this.$store.dispatch('getAllMaterials', {
