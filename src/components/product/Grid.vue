@@ -89,7 +89,7 @@
                 Vue.http.interceptors.pop();
             }
             Vue.http.interceptors.push(function(request, next) {
-                if(request.url === 'http://127.0.0.1:5000/api/v1.0/cors/') {
+                if(request.url === 'http://127.0.0.1:5000/api/v1.0/materials/get/') {
                     this.$store.dispatch('setMaterials', {infos: new Form()});
                 }                                  
                 next();
@@ -141,11 +141,9 @@
                     mdata: this.$store.getters.allInfos
                 }).then(
                 response => {                    
-                    //this.$data.tableData = response.data;
-                    // this.$store.dispatch('getAllMaterials', {
-                    //     material: response.data
-                    // });
-                    alert('success');
+                    this.$store.dispatch('getAllMaterials', {
+                        material: response.data
+                    });
                 },
                 response => {
                     alert('false');
