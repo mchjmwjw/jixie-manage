@@ -1,2 +1,4 @@
 export const RECEIVE_MATERIALS = 'RECEIVE_MATERIALS'; 
 export const SET_MATERIALS = 'SET_MATERIALS';
+
+export const RECEIVE_KINDS = 'RECEIVE_KINDS';

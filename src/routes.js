@@ -1,5 +1,6 @@
 import Product from './views/Product.vue';
 import Home from './views/Home.vue';
+import Treemg from './views/Treemg.vue';
 
 export default [
 	{ 
@@ -8,5 +9,8 @@ export default [
 	}, { 
 		path: '/product', 
 		component: Product 
+	}, {
+		path: '/treemg',
+		component: Treemg
 	}
 ];

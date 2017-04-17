@@ -6,9 +6,11 @@
             </el-menu-item>
             <el-submenu index="2">
                 <template slot="title">我的工作台</template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
+                <el-menu-item index="2-1" @click="handleManage">
+					<router-link to="/treemg">产品种类(树)维护</router-link>
+				</el-menu-item>
+                <el-menu-item index="2-2">产品分类管理</el-menu-item>
+                <el-menu-item index="2-3">产品展示图表</el-menu-item>
             </el-submenu>
             <el-menu-item index="3" @click="handleManage"><a href="http://element.eleme.io/#/zh-CN/component/form" target="_blank">组件</a></el-menu-item>
             <el-menu-item index="4" @click="handleManage">              
@@ -49,6 +51,9 @@ export default {
 					break;
 				case '4':
 					path = '/';
+					break;
+				case '2-1':
+					path = '/treemg';
 					break;
 			}
 			path == '' ? path=path : this.$router.push(path);

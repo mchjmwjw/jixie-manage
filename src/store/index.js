@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import * as actions from './actions';
 import * as getters from './getters';
 import materials from './modules/materials';
+import productkinds from './modules/productkinds';
 
 Vue.use(Vuex);
 
@@ -22,7 +23,7 @@ export default new Vuex.Store({
 	actions,
 	getters,
 	modules: {
-		materials
+		materials, productkinds
 	}
 });
 
