@@ -8,6 +8,7 @@ import Store from './store';
 import routes from './routes';
 //import { Button, Select } from 'element-ui';
 
+
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(VueResource);
