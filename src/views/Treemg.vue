@@ -21,80 +21,107 @@
             expand-on-click-node
             ref="kindtree">
         </el-tree>
-        <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
+        <el-button type="primary" @click="uploadData">上传<i class="el-icon-upload el-icon--right"></i></el-button>
     </div>
 </template>
 
 <script>
 let id = 1000;
-import { mapGetters, mapActions } from 'vuex'
-import manage from '../../api/manage.js'
+import { mapGetters, mapActions } from 'vuex';
+import manage from '../../api/manage.js';
 function Kind(phid=1, pid=null, k_name='', children=[]) {
-    this.phid = phid;
-    this.pid = pid;
-    this.k_name = k_name;
-    this.children = children;
+	this.phid = phid;
+	this.pid = pid;
+	this.k_name = k_name;
+	this.children = children;
 }
 export default {
-    watch: {
-        filterText(val) {
-            this.$refs.kindtree.filter(val);
-        }
-    },
+	watch: {
+		filterText(val) {
+			this.$refs.kindtree.filter(val);
+		}
+	},
 
-    data() {
-        return {
-            filterText: '',
-            data2: [],
-            defaultProps: {
-                children: 'children',
-                label: 'k_name'
-            }
-        }
-    },
+	data() {
+		return {			
+			filterText: '',
+			defaultProps: {
+				children: 'children',
+				label: 'k_name'
+			}
+		};
+	},
 
-    created: function() {
-        //this.$store.dispatch('getAllKinds', {kinds: manage.tree});
-        this.$store.dispatch('getAllKinds', {kinds: [new Kind()]});
-    },
+	created: function() {
+		this.$store.dispatch('getAllKinds', {kinds: [new Kind()]});
+	},
 
-    computed: mapGetters({
-        kinds: 'allkinds'
-    }),
+	computed: mapGetters({
+		kinds: 'allkinds'
+	}),
 
-    methods: {
-        append(store, data) {
-            store.append({ phid: id++, pid: data.phid, k_name: 'testtest', children: [] }, data);
-        },
+	methods: {
+		append(store, data) {
+			let obj = { phid: id++, pid: data.phid, k_name: 'testtest', children: [] };
+			store.append(obj, data);
+		},
 
-        remove(store, data) {
-            store.remove(data);
-        },
+		remove(store, data) {
+			store.remove(data);
+		},
 
-        renderContent(h, { node, store, data }) {
-            return (
-            <span>
-                <span>
-                <span><el-input value={node.label}></el-input></span>
-                </span>
-                <span style="float: right; margin-right: 20px">
-                <el-button size="mini" on-click={ () => this.append(store, data) }>添加</el-button>
-                <el-button size="mini" on-click={ () => this.remove(store, data) }>删除</el-button>
-                </span>
-            </span>);
-        },
+		renderContent(h, { node, store, data }) {
+			return (
+			<span>
+				<span>
+				<span><el-input value={node.label}></el-input></span>
+				</span>
+				<span style="float: right; margin-right: 20px">
+				<el-button size="mini" on-click={ () => this.append(store, data) }>添加</el-button>
+				<el-button size="mini" on-click={ () => this.remove(store, data) }>删除</el-button>
+				</span>
+			</span>);
+		},
 
-        filterNode(value, data) {
-            if (!value) return true;
-            return data.k_name.indexOf(value) !== -1;
-        },
+		filterNode(value, data) {
+			if (!value) return true;
+			return data.k_name.indexOf(value) !== -1;
+		},
 
-        insertNewNode() {
-            //this.append(this.$refs.kindtree.root, new Kind(id++, null ,'试一试'))
-            //this.kinds.push(new Kind(id++, null ,'试一试'));
-            this.$refs.kindtree.store.append(new Kind(id++, null ,'试一试'), this.$refs.kindtree.root);
-        }
-    }
+		insertNewNode() {
+			this.$refs.kindtree.store.append(new Kind(id++, null ,'试一试'), this.$refs.kindtree.root.parent);            
+		},
+
+		uploadData() {
+			//this.$store.dispatch('getAllKinds', {kinds: this.$refs.kindtree.store.data});
+			let arr = [];
+			this.convertNodeToData(arr, this.$refs.kindtree.root.childNodes, this);	
+			this.$store.dispatch('getAllKinds', {kinds: arr});
+
+			this.$http.post('http://127.0.0.1:5000/api/v1.0/kindtree/save/',{
+				mdata: this.$store.getters.allkinds
+			}).then(
+			response => {                    
+				// this.$store.dispatch('getAllMaterials', {
+				// 	material: response.data
+				// });
+				alert('success');
+				console.log(response);
+			},
+			response => {
+				alert('false');
+				console.log(response);
+			});
+		},
+		convertNodeToData(pnodechildren, childnodes, me) {                       
+			childnodes.forEach(function(element) {
+				pnodechildren.push(element.data);
+				if(element.childNodes.length > 0) {
+					me.convertNodeToData(element.data.children, element.childNodes, me);
+				}
+			});            
+		}
+	}
 };
 </script>
 
