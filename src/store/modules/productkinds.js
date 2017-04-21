@@ -1,19 +1,21 @@
 import * as types from '../mutation-types';
 
 const state = {
-	all: ''
+	all: '',
+	data: ''
 };
 
 const getters = {
-	allkinds: state => state.all
+	allkinds: state => state.all,
+	kinddata: state => state.data
 };
 
 const mutations = {
 	[types.RECEIVE_KINDS] (state, { kinds }) {
 		state.all = kinds;
 	},
-	[types.INSERT_KIND] (state, { kind }) {
-		state.all.push(kind);
+	[types.SAVE_KIND] (state, { kind }) {
+		state.data = kind;
 	}
 };
 
@@ -21,8 +23,8 @@ const actions = {
 	getAllKinds({commit}, data) {
 		commit(types.RECEIVE_KINDS, data);
 	},
-	addNewNode({commit}, data) {
-		commit(types.INSERT_KIND, data);
+	saveKindData({commit}, data) {
+		commit(types.SAVE_KIND, data);
 	}
 };
 

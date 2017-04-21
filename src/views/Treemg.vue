@@ -18,7 +18,6 @@
             :expand-on-click-node="false"
             :render-content="renderContent"
             :filter-node-method="filterNode"
-            expand-on-click-node
             ref="kindtree">
         </el-tree>
         <el-button type="primary" @click="uploadData">上传<i class="el-icon-upload el-icon--right"></i></el-button>
@@ -29,12 +28,23 @@
 let id = 1000;
 import { mapGetters, mapActions } from 'vuex';
 import manage from '../../api/manage.js';
+import Vue from 'vue';
 function Kind(phid=1, pid=null, k_name='', children=[]) {
 	this.phid = phid;
 	this.pid = pid;
 	this.k_name = k_name;
 	this.children = children;
 }
+
+var Child = {
+  template: '<div>A custom component!</div>'
+};
+
+Vue.component('my-input', {
+	template: '<div>A custom component!</div>',
+	render: () => return 
+});
+
 export default {
 	watch: {
 		filterText(val) {
@@ -48,7 +58,8 @@ export default {
 			defaultProps: {
 				children: 'children',
 				label: 'k_name'
-			}
+			},
+			name: 'lala'
 		};
 	},
 
@@ -59,6 +70,10 @@ export default {
 	computed: mapGetters({
 		kinds: 'allkinds'
 	}),
+
+	components: {
+		'my-input': Child
+	},
 
 	methods: {
 		append(store, data) {
@@ -74,11 +89,22 @@ export default {
 			return (
 			<span>
 				<span>
-				<span><el-input value={node.label}></el-input></span>
+					<span>
+						<el-input value={node.label} v-model='name' on-blur={ (a) => {
+							console.log('xxx');
+							var xx = 'xx';
+						} }>
+						</el-input>
+					</span>
 				</span>
 				<span style="float: right; margin-right: 20px">
-				<el-button size="mini" on-click={ () => this.append(store, data) }>添加</el-button>
+				<el-button size="mini" on-click={ () => {
+					node.expand(); 
+					this.append(store, data);
+				} }>添加
+				</el-button>
 				<el-button size="mini" on-click={ () => this.remove(store, data) }>删除</el-button>
+				<my-input></my-input>
 				</span>
 			</span>);
 		},
@@ -93,13 +119,14 @@ export default {
 		},
 
 		uploadData() {
+			console.log('haha');
 			//this.$store.dispatch('getAllKinds', {kinds: this.$refs.kindtree.store.data});
-			let arr = [];
-			this.convertNodeToData(arr, this.$refs.kindtree.root.childNodes, this);	
+			let arr = [], brr = [];
+			this.convertNodeToData(arr, this.$refs.kindtree.root.childNodes, this, brr);	
 			this.$store.dispatch('getAllKinds', {kinds: arr});
-
+			this.$store.dispatch('saveKindData', { kind: brr});
 			this.$http.post('http://127.0.0.1:5000/api/v1.0/kindtree/save/',{
-				mdata: this.$store.getters.allkinds
+				mdata: this.$store.getters.kinddata
 			}).then(
 			response => {                    
 				// this.$store.dispatch('getAllMaterials', {
@@ -113,13 +140,19 @@ export default {
 				console.log(response);
 			});
 		},
-		convertNodeToData(pnodechildren, childnodes, me) {                       
+		
+		convertNodeToData(pnodechildren, childnodes, me, dataArr) {                       
 			childnodes.forEach(function(element) {
 				pnodechildren.push(element.data);
+				dataArr.push(element.data);
 				if(element.childNodes.length > 0) {
-					me.convertNodeToData(element.data.children, element.childNodes, me);
+					me.convertNodeToData(element.data.children, element.childNodes, me, dataArr);
 				}
 			});            
+		},
+		
+		doSomething() {
+			alert('xxx');
 		}
 	}
 };
