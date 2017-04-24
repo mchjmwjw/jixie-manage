@@ -16,6 +16,23 @@ const mutations = {
 	},
 	[types.SAVE_KIND] (state, { kind }) {
 		state.data = kind;
+	},
+	[types.LOAD_KIND] (state, { kind }) {
+		let arr = [];
+		kind.forEach(function(element) {
+			element.children = [];
+			if(element.pid == null) {
+				arr.push(element);
+			}
+			else {
+				arr.forEach(function(ele) {
+					if(ele.id == element.pid){
+						ele.children.push(ele);
+					}
+				});
+			}
+		}, this);
+		state.all = arr;
 	}
 };
 
@@ -25,6 +42,9 @@ const actions = {
 	},
 	saveKindData({commit}, data) {
 		commit(types.SAVE_KIND, data);
+	},
+	loadKindData({commit}, data) {
+		commit(types.LOAD_KIND, data);
 	}
 };
 

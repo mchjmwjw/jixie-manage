@@ -3,3 +3,4 @@ export const SET_MATERIALS = 'SET_MATERIALS';
 
 export const RECEIVE_KINDS = 'RECEIVE_KINDS';
 export const SAVE_KIND = 'SAVE_KIND';
+export const LOAD_KIND = 'LOAD_KIND';

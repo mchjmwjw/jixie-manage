@@ -1,5 +1,6 @@
 <template>
     <div class="treemg">
+		<your-input></your-input>
         <el-input
             placeholder="输入关键字进行过滤"
             v-model="filterText">
@@ -37,12 +38,74 @@ function Kind(phid=1, pid=null, k_name='', children=[]) {
 }
 
 var Child = {
-  template: '<div>A custom component!</div>'
+	render: function(createElement) {
+		return createElement(
+			'div',
+			{
+				style: {
+					display: 'inline-block'					
+				},
+			},
+			[
+				createElement('p', {
+					style: {
+						color: 'pink',						
+						display: 'inline-block',
+						margin: '0 10px 0 0'
+					},
+					domProps: {						
+						innerHTML:'树维护'
+					}
+				}, this.$slots.default)
+			]
+		);
+	}
 };
 
+var Child2 = {
+	render: function(createElement) {
+		var self = this;
+		return createElement('el-input',{
+			domProps: {
+				value: self.value
+			},
+			on: {
+				input: function (event) {
+					self.value = event.target.value;
+				}
+			},
+			props:{
+				labelContent: 'labelContent'
+			}
+		});
+	}	
+};
+
+Vue.component('my-input2', Child2);
+
 Vue.component('my-input', {
-	template: '<div>A custom component!</div>',
-	render: () => return 
+	render: function(createElement) {
+		return createElement(
+			'div',
+			{
+				style: {
+					display: 'inline-block'					
+				},
+			},
+			[
+				createElement('p', {
+					style: {
+						color: 'red',			
+						display: 'inline-block',
+						margin: '0 10px 0 0'
+					},
+					domProps: {						
+						innerHTML:'hello'
+					}
+				}, this.$slots.default)
+			]
+		);
+	}
 });
 
 export default {
@@ -64,7 +127,21 @@ export default {
 	},
 
 	created: function() {
-		this.$store.dispatch('getAllKinds', {kinds: [new Kind()]});
+		//this.$store.dispatch('getAllKinds', {kinds: [new Kind()]});
+		this.$http.get('http://127.0.0.1:5000/api/v1.0/kindtree/get/').then(
+			response => {                    
+				// this.$store.dispatch('getAllMaterials', {
+				// 	material: response.data
+				// });
+				alert('success');
+				console.log(response);
+				//this.$store.dispatch('getAllKinds', {kinds: response.data});
+			},
+			response => {
+				alert('false');
+				console.log(response);
+			}
+		);
 	},
 
 	computed: mapGetters({
@@ -72,7 +149,7 @@ export default {
 	}),
 
 	components: {
-		'my-input': Child
+		'your-input': Child
 	},
 
 	methods: {
@@ -84,27 +161,31 @@ export default {
 		remove(store, data) {
 			store.remove(data);
 		},
-
+		/*
+			<el-input value={node.label} v-model='name' on-blur={ (a) => {
+				console.log('xxx');
+				var xx = 'xx';
+			} }>
+			</el-input>
+		*/
 		renderContent(h, { node, store, data }) {
 			return (
 			<span>
 				<span>
 					<span>
-						<el-input value={node.label} v-model='name' on-blur={ (a) => {
-							console.log('xxx');
-							var xx = 'xx';
-						} }>
-						</el-input>
+						<el-input value={node.label} on-input={ (a) => {
+							data.k_name = a;
+						}}></el-input>
 					</span>
 				</span>
-				<span style="float: right; margin-right: 20px">
-				<el-button size="mini" on-click={ () => {
-					node.expand(); 
-					this.append(store, data);
-				} }>添加
-				</el-button>
-				<el-button size="mini" on-click={ () => this.remove(store, data) }>删除</el-button>
-				<my-input></my-input>
+				<span style="float: right; margin-right: 20px">					
+					<el-button size="mini" on-click={ () => {
+						node.expand(); 
+						this.append(store, data);
+					} }>添加
+					</el-button>
+					<el-button size="mini" on-click={ () => this.remove(store, data) }>删除</el-button>
+					
 				</span>
 			</span>);
 		},
@@ -148,7 +229,7 @@ export default {
 				if(element.childNodes.length > 0) {
 					me.convertNodeToData(element.data.children, element.childNodes, me, dataArr);
 				}
-			});            
+			});
 		},
 		
 		doSomething() {
