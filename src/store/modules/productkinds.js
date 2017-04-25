@@ -1,7 +1,7 @@
 import * as types from '../mutation-types';
 
 const state = {
-	all: '',
+	all: [],
 	data: ''
 };
 
@@ -17,17 +17,17 @@ const mutations = {
 	[types.SAVE_KIND] (state, { kind }) {
 		state.data = kind;
 	},
-	[types.LOAD_KIND] (state, { kind }) {
+	[types.LOAD_KIND] (state, { kinds }) {
 		let arr = [];
-		kind.forEach(function(element) {
+		kinds.forEach(function(element, i, kindarr) {
 			element.children = [];
 			if(element.pid == null) {
 				arr.push(element);
 			}
 			else {
-				arr.forEach(function(ele) {
-					if(ele.id == element.pid){
-						ele.children.push(ele);
+				kindarr.forEach(function(ele) {
+					if(ele.phid == element.pid){
+						ele.children.push(element);
 					}
 				});
 			}

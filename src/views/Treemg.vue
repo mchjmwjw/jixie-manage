@@ -16,7 +16,7 @@
             :props="defaultProps"
             show-checkbox
             node-key="phid"        
-            :expand-on-click-node="false"
+            :expand-on-click-node="true"
             :render-content="renderContent"
             :filter-node-method="filterNode"
             ref="kindtree">
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-let id = 1000;
+let id = -1;
 import { mapGetters, mapActions } from 'vuex';
 import manage from '../../api/manage.js';
 import Vue from 'vue';
@@ -122,7 +122,8 @@ export default {
 				children: 'children',
 				label: 'k_name'
 			},
-			name: 'lala'
+			name: 'lala',
+			removeIds: []
 		};
 	},
 
@@ -133,9 +134,8 @@ export default {
 				// this.$store.dispatch('getAllMaterials', {
 				// 	material: response.data
 				// });
-				alert('success');
 				console.log(response);
-				//this.$store.dispatch('getAllKinds', {kinds: response.data});
+				this.$store.dispatch('loadKindData', {kinds: response.data});
 			},
 			response => {
 				alert('false');
@@ -154,12 +154,24 @@ export default {
 
 	methods: {
 		append(store, data) {
-			let obj = { phid: id++, pid: data.phid, k_name: 'testtest', children: [] };
+			let obj = { phid: id--, pid: data.phid, k_name: 'testtest', children: [] };
 			store.append(obj, data);
 		},
-
+		// 删除节点
 		remove(store, data) {
 			store.remove(data);
+			// 保存删除节点的phid
+			function saveRemoveId(obj, me) {
+				if(obj.phid > 0) {
+					me.$data.removeIds.push(obj.phid);
+				}
+				if(obj.children.length > 0) {
+					obj.children.forEach(function(element) {
+						saveRemoveId(element, me);
+					}, this);					
+				}
+			}
+			saveRemoveId(data, this);			
 		},
 		/*
 			<el-input value={node.label} v-model='name' on-blur={ (a) => {
@@ -179,8 +191,9 @@ export default {
 					</span>
 				</span>
 				<span style="float: right; margin-right: 20px">					
-					<el-button size="mini" on-click={ () => {
-						node.expand(); 
+					<el-button size="mini" value="number" on-click={ () => {
+						//node.expand(); 
+						node.expanded = false;
 						this.append(store, data);
 					} }>添加
 					</el-button>
@@ -196,24 +209,21 @@ export default {
 		},
 
 		insertNewNode() {
-			this.$refs.kindtree.store.append(new Kind(id++, null ,'试一试'), this.$refs.kindtree.root.parent);            
+			this.$refs.kindtree.store.append(new Kind(id--, null ,'试一试'), this.$refs.kindtree.root.parent);            
 		},
 
 		uploadData() {
-			console.log('haha');
 			//this.$store.dispatch('getAllKinds', {kinds: this.$refs.kindtree.store.data});
 			let arr = [], brr = [];
 			this.convertNodeToData(arr, this.$refs.kindtree.root.childNodes, this, brr);	
-			this.$store.dispatch('getAllKinds', {kinds: arr});
+			//this.$store.dispatch('getAllKinds', {kinds: arr});
 			this.$store.dispatch('saveKindData', { kind: brr});
 			this.$http.post('http://127.0.0.1:5000/api/v1.0/kindtree/save/',{
-				mdata: this.$store.getters.kinddata
+				mdata: this.$store.getters.kinddata, removeIds: this.$data.removeIds
 			}).then(
 			response => {                    
-				// this.$store.dispatch('getAllMaterials', {
-				// 	material: response.data
-				// });
-				alert('success');
+
+				this.$store.dispatch('loadKindData', {kinds: response.data});
 				console.log(response);
 			},
 			response => {
@@ -227,7 +237,7 @@ export default {
 				pnodechildren.push(element.data);
 				dataArr.push(element.data);
 				if(element.childNodes.length > 0) {
-					me.convertNodeToData(element.data.children, element.childNodes, me, dataArr);
+					me.convertNodeToData(pnodechildren, element.childNodes, me, dataArr);
 				}
 			});
 		},

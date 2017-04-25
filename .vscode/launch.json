@@ -6,6 +6,20 @@
             "request": "attach",
             "name": "Attach to Process",
             "processId": "${command:PickProcess}",
+            "port": 8086
+        },
+    {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Launch Chrome1",
+        "url": "http://http://192.168.6.69:8086/",
+        "webRoot": "${workspaceRoot}"
+    },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Process",
+            "processId": "${command:PickProcess}",
             "port": 5858
         },
         {
