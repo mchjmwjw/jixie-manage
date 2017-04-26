@@ -11,10 +11,12 @@
             <el-table-column prop="m_remark" label="备注"></el-table-column>
         </el-table>
         </div>
-        
-        <el-button type="primary" @click="doSomeThing">+1 按钮</el-button>
-        <el-input v-model="input" placeholder="请输入内容">            
-        </el-input>
+        		
+		<div hidden>
+			<el-button type="primary" @click="doSomeThing">+1 按钮</el-button>
+        	<el-input v-model="input" placeholder="请输入内容">            
+        	</el-input>
+		</div>        
 
         <div class='panel-form'>            
             <el-form ref="form" :model="infos" label-width="80px">

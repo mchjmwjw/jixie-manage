@@ -48,7 +48,7 @@ export default {
 	methods: {
 		filterNode(value, data) {
 			if (!value) return true;
-			return data.label.indexOf(value) !== -1;
+			return data.k_name.indexOf(value) !== -1;
 		},
 		doo(obj, node, com) {
 			EventBus.$emit('id-selected', node);
@@ -75,6 +75,6 @@ export default {
 <style>
     /*选中节点背景色 */
     .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
-            background-color: #fac285;
+        background-color: #fac285;
     }
 </style>
