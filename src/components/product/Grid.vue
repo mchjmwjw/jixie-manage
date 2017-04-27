@@ -146,6 +146,9 @@ export default {
 				this.$store.dispatch('getAllMaterials', {
 					material: response.data
 				});
+				this.$store.dispatch('setMaterials', {
+					infos: new Form()
+				});
 			},
 			response => {
 				alert('false');

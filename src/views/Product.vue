@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row :gutter="20">   <!-- gutter 来指定每行之间的间隔 -->
-            <el-col :span="6">
+            <el-col :span="4">
                 <div class="grid-content bg-purple">
                     <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
                     <el-tree class="filter-tree" :data="kinds" :props="defaultProps" highlight-current
@@ -9,7 +9,7 @@
                     </el-tree>
                 </div>
             </el-col>
-            <el-col :span="18">                
+            <el-col :span="20">                
                 <div class="grid-content bg-purple">
                     <tabpanel></tabpanel>
                 </div>
@@ -67,7 +67,7 @@ export default {
 	},
 
 	computed: mapGetters({
-		kinds: 'allkinds'
+		kinds: 'productdata'
 	})
 };
 </script>

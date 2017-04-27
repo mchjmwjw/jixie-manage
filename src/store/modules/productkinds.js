@@ -7,7 +7,13 @@ const state = {
 
 const getters = {
 	allkinds: state => state.all,
-	kinddata: state => state.data
+	kinddata: state => state.data,
+	productdata: state => {
+		return state.all.concat([{
+			k_name: '综合管理',
+			flag: 'manage'
+		}]);		
+	}
 };
 
 const mutations = {
