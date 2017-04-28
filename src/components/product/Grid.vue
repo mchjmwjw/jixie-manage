@@ -9,6 +9,7 @@
             <el-table-column prop="m_amount" label="数量"></el-table-column>
             <el-table-column prop="m_unit" label="计量单位"></el-table-column>
             <el-table-column prop="m_remark" label="备注"></el-table-column>
+			<el-table-column prop="kind_id" label="类别主键"></el-table-column>
         </el-table>
         </div>
         		

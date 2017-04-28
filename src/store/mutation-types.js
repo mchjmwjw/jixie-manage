@@ -1,5 +1,6 @@
 export const RECEIVE_MATERIALS = 'RECEIVE_MATERIALS'; 
 export const SET_MATERIALS = 'SET_MATERIALS';
+export const FILTER_MATERIALS = 'FILTER_MATERIALS';
 
 export const RECEIVE_KINDS = 'RECEIVE_KINDS';
 export const SAVE_KIND = 'SAVE_KIND';

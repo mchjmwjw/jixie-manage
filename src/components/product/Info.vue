@@ -5,7 +5,7 @@
                 {{ item.content }}
             </h1>
             <p v-else>
-                <component :is="item.componentId"></component>
+                <component :is="item.componentId" :cur-node-phid="item.nodephid"></component>
             </p>
         </el-tab-pane>
     </el-tabs>
@@ -15,24 +15,42 @@
 import grid from './Grid.vue';
 import mdetail from './MaterialDetail.vue';
 import EventBus from '../../static/js/eventBus.js';
+Array.prototype.contains = function (obj, prop) {  
+	var i = this.length;  
+	while (i--) {  
+		if (this[i][prop] === obj) {  
+			return true;  
+		}  
+	}  
+	return false;  
+};
 export default {
 	mounted() {
 		var me = this;
 		EventBus.$on('id-selected', function (node) {
-			if(node.isLeaf) {
+			var i = me.$data.editableTabs.length;  
+			while (i--) {  
+				if (me.$data.editableTabs[i].nodephid === node.data.phid) {  
+					me.$data.editableTabsValue = me.$data.editableTabs[i].name;					
+					return;  
+				}  
+			}  
+			if(node.isLeaf) {			/*叶子节点*/
 				if(node.data.flag == 'manage') {
 					me.$data.editableTabs.push({
 						title: node.label,
 						name: ++me.$data.tabIndex + '',
 						content: '',
-						componentId: grid
+						componentId: grid,
+						nodephid: node.data.phid
 					});
 				} else {
 					me.$data.editableTabs.push({
 						title: node.label,
 						name: ++me.$data.tabIndex + '',
 						content: '',
-						componentId: mdetail
+						componentId: mdetail,
+						nodephid: node.data.phid
 					});
 				}				
 				me.$data.editableTabsValue = me.$data.tabIndex + '';
@@ -45,7 +63,8 @@ export default {
 			editableTabs: [{
 				title: 'Tab 1',
 				name: '1',
-				content: 'Tab 1 content'                 
+				content: 'Tab 1 content',
+				nodephid: -1                 
 			}],
 			tabIndex: 1
 		};

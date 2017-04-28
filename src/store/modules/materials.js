@@ -5,12 +5,14 @@ import * as types from '../mutation-types';
 const state = {
 	all: [],
 	count: 1,
-	infos: {}
+	infos: {},
+	filter: []
 };
 
 const getters = {
 	allMaterials: state => state.all,
-	allInfos: state => state.infos
+	allInfos: state => state.infos,
+	filterMaterials: state => state.filter
 };
 
 const mutations = {
@@ -22,15 +24,28 @@ const mutations = {
 	},
 	[types.SET_MATERIALS] (state, { infos }) {
 		state.infos = infos;
+	},
+	[types.FILTER_MATERIALS] (state, { kind_id }) {
+		let arr = [];
+		state.all.forEach(function(element) {
+			if(element.kind_id == kind_id) {
+				arr.push(element);
+			}
+		}, this);
+		state.filter = arr;
 	}
 };
 
 const actions = {
 	getAllMaterials ({ commit }, data) {		
 		commit(types.RECEIVE_MATERIALS, data);
+		return data.me;
 	},
 	setMaterials ({ commit }, data) {
 		commit(types.SET_MATERIALS, data);
+	},
+	getMaterialsByKindId ({ commit }, data) {
+		commit(types.FILTER_MATERIALS, data);
 	}
 };
 

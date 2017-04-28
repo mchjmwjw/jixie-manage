@@ -2,7 +2,7 @@
     <el-row>
         <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-                <h1>欢迎使用xxx！</h1>
+                <h1>欢迎使用！</h1>
             </div>
         </el-col>
     </el-row>    
@@ -10,7 +10,7 @@
 
 <style>
 .bg-purple-dark {
-    background: #99a9bf;
+    /*background: #99a9bf;*/
 }
 .grid-content {
     /*border-radius: 4px;*/

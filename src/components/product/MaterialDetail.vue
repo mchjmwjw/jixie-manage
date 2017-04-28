@@ -1,9 +1,29 @@
 <template>
-<div class="materialdetail">
+<div class="materialdetail">			
     <el-row :gutter="20">
-        <el-col :span="12">
+		
+        <el-col :span="10">
+			<div class="grid-content">				
+				<el-table :data="filtermaterials" border style="width: 100%" max-height="1000">					
+					<el-table-column prop="m_no" label="编号"></el-table-column>
+					<el-table-column prop="m_name" label="名称" ></el-table-column>					
+					<el-table-column prop="m_amount" label="数量"></el-table-column>											
+					<el-table-column fixed="right" label="操作" width="120">				
+						<template scope="scope">
+							<el-button
+								@click.native.prevent="deleteRow(scope.$index, tableData4)"
+								type="text"
+								size="small">
+								移除
+							</el-button>
+						</template>
+					</el-table-column>
+				</el-table>	
+			</div>
+		</el-col>
+        <el-col :span="14">
 			<div class="grid-content">
-				<el-collapse v-model="activeNames" @change="handleChange">
+				<el-collapse v-model="activeNames" @change="handleChange">					
 					<el-collapse-item title="物品名称" name="1">
 						<div class=mdetail-form>
 							<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -56,20 +76,51 @@
 							</el-form>
 						</div>
 					</el-collapse-item>
+					<el-collapse-item title="反馈 Feedback" name="2">
+						<div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
+						<div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
+					</el-collapse-item>
+					<el-collapse-item title="可控 Controllability" name="3">
+						<div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
+						<div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
+					</el-collapse-item>
 				</el-collapse>
 			</div>
-		</el-col>
-        <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-        <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
+		</el-col>		
     </el-row>
+	
 </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 export default {
+	mounted () {
+		this.$http.get('http://127.0.0.1:5000/api/v1.0/materials/get/').then(
+			response => {                    
+				//this.$data.tableData = response.data;
+				this.$store.dispatch('getAllMaterials', {
+					material: response.data,
+					me: this
+				}).then((me) => {
+					let arr = [];
+					me.materials.forEach(function(element) {
+						if(element.kind_id == me.curNodePhid) {
+							arr.push(element);
+						}
+					}, this);
+					me.$data.filtermaterials = arr;					
+				});				
+			},
+			response => {
+				alert('false');
+				console.log(response);
+			}
+		);
+	},
 	data: function() {
 		return {
-			activeNames: ['1'],
+			activeNames: [],
 			ruleForm: {
 				name: '',
 				region: '',
@@ -103,9 +154,15 @@ export default {
 				desc: [
 					{ required: true, message: '请填写活动形式', trigger: 'blur' }
 				]
-			}
+			},
+			filtermaterials: []		
 		};
 	},
+	props:['curNodePhid'],
+	computed: mapGetters({
+		materials: 'allMaterials', // 过滤后的原材料数据
+		infos: 'allInfos'
+	}),
 	methods: {
 		handleChange: function() {},
 		submitForm(formName) {
@@ -120,15 +177,18 @@ export default {
 		},
 		resetForm(formName) {
 			this.$refs[formName].resetFields();
+		},
+		deleteRow(index, rows) {
+			rows.splice(index, 1);
 		}
-	}
+	}	
 };
 </script>
 
 <style>
 	div.materialdetail {
 		height: auto!important;
-		min-height: 500px;
+		min-height: 800px;
 	}
 	div.materialdetail .el-row {
 		margin-bottom: 20px;
