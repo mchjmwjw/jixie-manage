@@ -26,53 +26,53 @@
 				<el-collapse v-model="activeNames" @change="handleChange">					
 					<el-collapse-item title="物品名称" name="1">
 						<div class=mdetail-form>
-							<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-							<el-form-item label="活动名称" prop="name">
-								<el-input v-model="ruleForm.name"></el-input>
-							</el-form-item>
-							<el-form-item label="活动区域" prop="region">
-								<el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-								<el-option label="区域一" value="shanghai"></el-option>
-								<el-option label="区域二" value="beijing"></el-option>
-								</el-select>
-							</el-form-item>
-							<el-form-item label="活动时间" required>
+							<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">								
+								<el-row :gutter="20">
 								<el-col :span="11">
-								<el-form-item prop="date1">
-									<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-								</el-form-item>
+									<el-form-item label="编号" prop="no">
+										<el-input v-model="ruleForm.no"></el-input>
+									</el-form-item>
 								</el-col>
-								<el-col class="line" :span="2">-</el-col>
+								<el-col :span="11">	
+									<el-form-item label="名称" prop="name">
+										<el-input v-model="ruleForm.name"></el-input>
+									</el-form-item>
+								</el-col>
+								</el-row>
+								<el-row :gutter="20">
 								<el-col :span="11">
-								<el-form-item prop="date2">
-									<el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-								</el-form-item>
+									<el-form-item label="单位" prop="unit">
+										<el-input v-model="ruleForm.unit"></el-input>
+									</el-form-item>
 								</el-col>
-							</el-form-item>
-							<el-form-item label="即时配送" prop="delivery">
-								<el-switch on-text="" off-text="" v-model="ruleForm.delivery"></el-switch>
-							</el-form-item>
-							<el-form-item label="活动性质" prop="type">
-								<el-checkbox-group v-model="ruleForm.type">
-								<el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-								<el-checkbox label="地推活动" name="type"></el-checkbox>
-								<el-checkbox label="线下主题活动" name="type"></el-checkbox>
-								<el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-								</el-checkbox-group>
-							</el-form-item>
-							<el-form-item label="特殊资源" prop="resource">
-								<el-radio-group v-model="ruleForm.resource">
-								<el-radio label="线上品牌商赞助"></el-radio>
-								<el-radio label="线下场地免费"></el-radio>
-								</el-radio-group>
-							</el-form-item>
-							<el-form-item label="活动形式" prop="desc">
-								<el-input type="textarea" v-model="ruleForm.desc"></el-input>
-							</el-form-item>
-							<el-form-item>
-								<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-								<el-button @click="resetForm('ruleForm')">重置</el-button>
-							</el-form-item>
+								<el-col :span="11" class="amount">
+									<el-form-item label="数量" prop="amount">
+										<el-input-number v-model="ruleForm.amount" :min="0"></el-input-number>
+									</el-form-item>
+								</el-col>
+								</el-row>
+								<el-row :gutter="20">
+								<el-col :span="11">
+									<el-form-item label="类别" prop="kind">
+										<el-select v-model="ruleForm.kind" placeholder="请选择物品类别">
+											<el-option label="原材料" value="原材料"></el-option>
+											<el-option label="易损件" value="易损件"></el-option>
+										</el-select>
+									</el-form-item>
+								</el-col>
+								<el-col :span="11">
+									<el-form-item label="种类" prop="kindid">
+										<el-input v-model="ruleForm.kindid"></el-input>
+									</el-form-item>
+								</el-col>
+								</el-row>
+								<el-form-item label="备注" prop="remark">
+									<el-input v-model="ruleForm.remark" type="textarea" :row="5"></el-input>
+								</el-form-item>
+								<el-form-item>
+									<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+									<el-button @click="resetForm('ruleForm')">重置</el-button>
+								</el-form-item>
 							</el-form>
 						</div>
 					</el-collapse-item>
@@ -94,6 +94,9 @@
 
 <script>
 import {mapGetters} from 'vuex';
+
+var par = new RegExp(/^\d{4,6}$/, 'g');
+
 export default {
 	mounted () {
 		this.$http.get('http://127.0.0.1:5000/api/v1.0/materials/get/').then(
@@ -122,37 +125,37 @@ export default {
 		return {
 			activeNames: [],
 			ruleForm: {
+				no: '',
 				name: '',
-				region: '',
-				date1: '',
-				date2: '',
-				delivery: false,
-				type: [],
-				resource: '',
-				desc: ''
+				unit: '',
+				amount: '',
+				kind: '',				
+				remark: '',
+				kindid: ''
 			},
 			rules: {
+				no: [
+					{ required: true, message: '请输入物品编号', trigger: 'blur' },
+					{ min: 4, max: 6, message: '长度在 4 到 6 个字符', trigger: 'blur' },
+					{ pattern: /^\d{4,6}$/, message: '请按规范操作', trigger:'blur' }
+				],
 				name: [
-					{ required: true, message: '请输入活动名称', trigger: 'blur' },
-					{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+					{ required: true, message: '请输入物品名称', trigger: 'blur' }
 				],
-				region: [
-					{ required: true, message: '请选择活动区域', trigger: 'change' }
+				unit: [
+					{ required: true, message: '请输入计量单位', trigger: 'blur' }
 				],
-				date1: [
-					{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+				amount: [
+					{ type: 'integer', required: true, message: '请按规则输入数量', trigger: 'change' }
 				],
-				date2: [
-					{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+				kind: [
+					{ required: true, message: '请至少选择一个类别', trigger: 'change' }
 				],
-				type: [
-					{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+				remark: [
+					
 				],
-				resource: [
-					{ required: true, message: '请选择活动资源', trigger: 'change' }
-				],
-				desc: [
-					{ required: true, message: '请填写活动形式', trigger: 'blur' }
+				kindid: [
+					
 				]
 			},
 			filtermaterials: []		
@@ -190,7 +193,7 @@ export default {
 		height: auto!important;
 		min-height: 800px;
 	}
-	div.materialdetail .el-row {
+	div.materialdetail > .el-row {
 		margin-bottom: 20px;
 		&:last-child {
 			margin-bottom: 0;
@@ -231,5 +234,8 @@ export default {
 	}
 	div.materialdetail .el-collapse-item__header__arrow {
 		transition: transform 0.6s;
+	}
+	div.materialdetail div.amount div.el-form-item__content {
+		line-height: 13px;
 	}
 </style>

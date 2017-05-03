@@ -64,7 +64,7 @@ export default {
 				title: 'Tab 1',
 				name: '1',
 				content: 'Tab 1 content',
-				nodephid: -1                 
+				nodephid: -1
 			}],
 			tabIndex: 1
 		};

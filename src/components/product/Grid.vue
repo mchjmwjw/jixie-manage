@@ -5,11 +5,11 @@
             <el-table-column prop="phid" label="主键"></el-table-column>
             <el-table-column prop="m_no" label="编号"></el-table-column>
             <el-table-column prop="m_name" label="名称" ></el-table-column>
-            <el-table-column prop="m_kind" label="种类"></el-table-column>
+            <el-table-column prop="m_kind" label="类别"></el-table-column>
             <el-table-column prop="m_amount" label="数量"></el-table-column>
             <el-table-column prop="m_unit" label="计量单位"></el-table-column>
             <el-table-column prop="m_remark" label="备注"></el-table-column>
-			<el-table-column prop="kind_id" label="类别主键"></el-table-column>
+			<el-table-column prop="kind_id" label="种类主键"></el-table-column>
         </el-table>
         </div>
         		
@@ -28,7 +28,7 @@
             <el-form-item label="名称">
                 <el-input v-model="infos.m_name"></el-input>
             </el-form-item>
-            <el-form-item label="种类">
+            <el-form-item label="类别">
                 <el-select v-model="infos.m_kind" placeholder="请选择种类">
                 <el-option label="类别一" value="易损件"></el-option>
                 <el-option label="类别二" value="原材料"></el-option>
