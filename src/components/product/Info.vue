@@ -14,7 +14,7 @@
 <script>
 import grid from './Grid.vue';
 import mdetail from './MaterialDetail.vue';
-import EventBus from '../../static/js/eventBus.js';
+import EventBus from '../../static/js/eventBus';
 Array.prototype.contains = function (obj, prop) {  
 	var i = this.length;  
 	while (i--) {  

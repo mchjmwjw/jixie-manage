@@ -21,7 +21,7 @@
 <script>
 import Tabpanel from '../components/product/Info.vue';
 import { mapGetters } from 'vuex';
-import EventBus from '../static/js/eventBus.js';
+import EventBus from '../static/js/eventBus';
 export default {
 	components: {
 		'tabpanel': Tabpanel
