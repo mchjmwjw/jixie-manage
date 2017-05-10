@@ -9,10 +9,10 @@
                 <el-menu-item index="2-1" @click="handleManage">
 					<router-link to="/treemg">产品种类(树)维护</router-link>
 				</el-menu-item>
-                <el-menu-item index="2-2">
+                <el-menu-item index="2-2" @click="handleManage">
 					<router-link to="/mobile">产品分类管理</router-link>
 				</el-menu-item>
-                <el-menu-item index="2-3">
+                <el-menu-item index="2-3" @click="handleManage">
 					<router-link to="/matchart">产品展示图表</router-link>
 				</el-menu-item>
             </el-submenu>
