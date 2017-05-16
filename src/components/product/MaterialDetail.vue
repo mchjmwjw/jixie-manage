@@ -2,8 +2,12 @@
 <div class="materialdetail">			
     <el-row :gutter="20">
 		
-        <el-col :span="10">
-			<div class="grid-content">				
+        <el-col :span="10">			
+			<div class="grid-content">
+				<el-button-group>
+					<el-button type="primary" icon="plus" size="mini"></el-button>					
+					<el-button type="primary" icon="delete" size="mini"></el-button>
+				</el-button-group>
 				<el-table :data="filtermaterials" border style="width: 100%" max-height="1000" @row-click="rowClick" highlight-current-row>					
 					<el-table-column prop="m_no" label="编号"></el-table-column>
 					<el-table-column prop="m_name" label="名称" ></el-table-column>					
