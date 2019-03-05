@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 //var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
 	},
 
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
@@ -50,13 +51,14 @@ module.exports = {
 	},
 
 	plugins: [
-		new ExtractTextPlugin('[name]-[hash].css') // 分离js和css		
+		new ExtractTextPlugin('[name]-[hash].css'), // 分离js和css	
+		new VueLoaderPlugin()	
 	],
 
 	devServer: {
 		historyApiFallback: true,
 		noInfo: true,
-		host: '192.168.6.69'
+		host: '127.0.0.1'
 	},
 	devtool: '#eval-source-map'
 };

@@ -3,3 +3,4 @@ dist/
 npm-debug.log
 .tags
 .vscode
+npm-debug.log.*
