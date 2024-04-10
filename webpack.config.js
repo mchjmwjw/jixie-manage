@@ -56,9 +56,9 @@ module.exports = {
 	devServer: {
 		historyApiFallback: true,
 		noInfo: true,
-		host: '192.168.6.69'
+		host: '127.0.0.1'
 	},
-	devtool: '#eval-source-map'
+	devtool: 'source-map'  // '#eval-source-map'
 };
 
 if (process.env.NODE_ENV === 'production') {

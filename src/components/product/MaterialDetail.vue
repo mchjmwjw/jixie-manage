@@ -116,7 +116,7 @@ export default {
 				});				
 			},
 			response => {
-				alert('false');
+				alert('zahuishi');
 				console.log(response);
 			}
 		);
@@ -174,6 +174,7 @@ export default {
 					alert('submit!');
 				} else {
 					console.log('error submit!!');
+					console.log(this.$store)
 					return false;
 				}
 			});

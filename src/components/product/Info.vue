@@ -5,7 +5,7 @@
                 {{ item.content }}
             </h1>
             <p v-else>
-                <component :is="item.componentId" :cur-node-phid="item.nodephid"></component>
+                <component :is="item.componentId" :cur-node-phid="item.nodephid" :cur-node-name="item.k_name"></component>
             </p>
         </el-tab-pane>
     </el-tabs>
@@ -36,13 +36,15 @@ export default {
 				}  
 			}  
 			if(node.isLeaf) {			/*叶子节点*/
-				if(node.data.flag == 'manage') {
+				console.log(node)
+				if(node.data.flag != 'manage') {
 					me.$data.editableTabs.push({
 						title: node.label,
 						name: ++me.$data.tabIndex + '',
 						content: '',
 						componentId: grid,
-						nodephid: node.data.phid
+						nodephid: node.data.phid,
+						k_name: node.data.k_name
 					});
 				} else {
 					me.$data.editableTabs.push({
@@ -50,7 +52,8 @@ export default {
 						name: ++me.$data.tabIndex + '',
 						content: '',
 						componentId: mdetail,
-						nodephid: node.data.phid
+						nodephid: node.data.phid,
+						k_name: node.data.k_name
 					});
 				}				
 				me.$data.editableTabsValue = me.$data.tabIndex + '';

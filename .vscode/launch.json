@@ -12,7 +12,7 @@
         "type": "chrome",
         "request": "launch",
         "name": "Launch Chrome1",
-        "url": "http://http://192.168.6.69:8086/",
+        "url": "http://http://127.0.0.1:8086/",
         "webRoot": "${workspaceRoot}"
     },
         {
@@ -21,6 +21,17 @@
             "name": "Attach to Process",
             "processId": "${command:PickProcess}",
             "port": 5858
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "vuejs: chrome",
+            "url": "http://localhost:8086",
+            "webRoot": "${workspaceFolder}/src",
+            "breakOnLoad": true,
+            "sourceMapPathOverrides": {
+                "webpack:///src/*": "${webRoot}/*"
+            }
         },
         {
             "type": "chrome",
