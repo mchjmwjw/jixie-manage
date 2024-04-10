@@ -1,6 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+<<<<<<< HEAD
+=======
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+>>>>>>> ede87e08bd6df38ae3b661adfb7bad911964ec96
 //var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -12,7 +16,11 @@ module.exports = {
 	},
 
 	module: {
+<<<<<<< HEAD
 		loaders: [
+=======
+		rules: [
+>>>>>>> ede87e08bd6df38ae3b661adfb7bad911964ec96
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
@@ -50,7 +58,12 @@ module.exports = {
 	},
 
 	plugins: [
+<<<<<<< HEAD
 		new ExtractTextPlugin('[name]-[hash].css') // 分离js和css		
+=======
+		new ExtractTextPlugin('[name]-[hash].css'), // 分离js和css	
+		new VueLoaderPlugin()	
+>>>>>>> ede87e08bd6df38ae3b661adfb7bad911964ec96
 	],
 
 	devServer: {
@@ -58,7 +71,11 @@ module.exports = {
 		noInfo: true,
 		host: '127.0.0.1'
 	},
+<<<<<<< HEAD
 	devtool: 'source-map'  // '#eval-source-map'
+=======
+	devtool: '#eval-source-map'
+>>>>>>> ede87e08bd6df38ae3b661adfb7bad911964ec96
 };
 
 if (process.env.NODE_ENV === 'production') {

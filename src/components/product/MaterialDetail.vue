@@ -2,9 +2,13 @@
 <div class="materialdetail">			
     <el-row :gutter="20">
 		
-        <el-col :span="10">
-			<div class="grid-content">				
-				<el-table :data="filtermaterials" border style="width: 100%" max-height="1000">					
+        <el-col :span="10">			
+			<div class="grid-content">
+				<el-button-group>
+					<el-button type="primary" icon="plus" size="mini"></el-button>					
+					<el-button type="primary" icon="delete" size="mini"></el-button>
+				</el-button-group>
+				<el-table :data="filtermaterials" border style="width: 100%" max-height="1000" @row-click="rowClick" highlight-current-row>					
 					<el-table-column prop="m_no" label="编号"></el-table-column>
 					<el-table-column prop="m_name" label="名称" ></el-table-column>					
 					<el-table-column prop="m_amount" label="数量"></el-table-column>											
@@ -184,6 +188,17 @@ export default {
 		},
 		deleteRow(index, rows) {
 			rows.splice(index, 1);
+		},
+		rowClick(row, event, column) {
+			console.log(event);
+			var base = this.$data.ruleForm;
+			base.amount = row.m_amount;
+			base.kind = row.m_kind;
+			base.kindid = row.kind_id;
+			base.name = row.m_name;
+			base.no = row.m_no;
+			base.remark = row.m_remark;
+			base.unit = row.m_unit;
 		}
 	}	
 };

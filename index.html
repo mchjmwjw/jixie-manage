@@ -13,11 +13,11 @@
     		if(window.location.href.indexOf('?mobile')<0) {
     			try{
     				if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){
-    					window.location.href='http://192.168.6.69:8087/';
+    					window.location.href='http://127.0.0.1:8087/';
     				} else if (/iPad/i.test(navigator.userAgent)) {
                   //window.location.href="http://www.qq.com/pad/"
 				} else{
-					window.location.href='http://192.168.6.69:8087/';
+					window.location.href='http://127.0.0.1:8087/';
 				}
 			} catch(e) {}
 		}
